@@ -1,11 +1,8 @@
-package com.sachin.travelservice.dto;
+package com.sachin.travelservice.dto.fulldetail;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.sachin.travelservice.dto.UserDTO;
 import com.sachin.travelservice.entity.TravelPackageCategory;
-import jakarta.validation.constraints.FutureOrPresent;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,9 +15,9 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @Builder
-public class TravelDTO {
+public class TravelFullDetailDto {
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @NotEmpty
     private String travelId;
     @FutureOrPresent
     private LocalDate startDate;
@@ -35,23 +32,30 @@ public class TravelDTO {
     private int noOfChildren;
     @Min(value = 1, message = "Total Head Counts must be at least 1")
     private int totalHeadCount;
+    @NotNull
     private Boolean isWithPets;
+
     @NotNull
     private Boolean isWithGuide;
     @NotNull
     private Boolean isCancelled;
     private String guideId;
+
+    @DecimalMin(value = "1.0", message = "Total price Counts must be at least 1.0")
     private double totalPrice;
+
     @NotNull
     private LocalDate travelPlacedDate;
-    @NotEmpty
-    private List<HotelStayDto> hotelStayDtos;
 
     @NotEmpty
-    private String vehicleId;
+    private List<HotelStayFullDetailDto> hotelStayDtos;
+
+    @NotEmpty
+    private VehicleDTO vehicleDTO;
 
     @NotEmpty
     private TravelPackageCategory packageCategory;
+
     @NotEmpty
-    private String userId;
+    private UserDTO userDto;
 }

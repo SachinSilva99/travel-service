@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.time.LocalDate;
 
@@ -15,11 +16,11 @@ import java.time.LocalDate;
 public class HotelStay {
     @Id
     private String hotelStayId;
-    // hotel service's hotel entity's id
-    private String hotelId;
-    // this service's travel entity's id
+
+    @Field("travelId")
     private String travelId;
     private LocalDate hotelStayStartDate;
     private LocalDate hotelStayEndDate;
     private double hotelStayTotalCost;
+    private String hotelId;
 }
