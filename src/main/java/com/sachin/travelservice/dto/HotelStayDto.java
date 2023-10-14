@@ -2,7 +2,6 @@ package com.sachin.travelservice.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.time.LocalDate;
 

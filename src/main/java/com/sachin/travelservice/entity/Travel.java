@@ -32,19 +32,20 @@ public class Travel {
     private int noOfChildren;
     @Min(value = 1, message = "The total head count must be at least 1")
     private int totalHeadCount;
-    @NotNull
     private Boolean isWithPets;
-    @NotNull
     private Boolean isWithGuide;
-    @NotNull
     private Boolean isCancelled;
 
+    private Boolean isApprovedByAdmin;
+
+    @NotEmpty
+    private String bankSlipImg;
+
     @DecimalMin(value = "1.0", message = "The total price must be greater than or equal to 1")
-    private double totalPrice;
+    private double travelTotalPrice;
 
     @NotNull
     private LocalDate travelPlacedDate;
-
 
     @DBRef
     private List<HotelStay> hotelStays;

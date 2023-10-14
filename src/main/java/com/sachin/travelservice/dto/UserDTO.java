@@ -1,7 +1,5 @@
 package com.sachin.travelservice.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import com.sachin.travelservice.dto.enums.user.GENDER;
 import com.sachin.travelservice.dto.enums.user.USER_TYPE;
 import jakarta.validation.constraints.Email;
@@ -26,6 +24,10 @@ public class UserDTO {
     @NotBlank
     @Size(min = 6, max = 50, message = "username must be minimum 6 characters and maximum 50")
     private String username;
+
+    @NotBlank
+    private String password;
+
     @Email
     private String email;
     @NotBlank

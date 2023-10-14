@@ -2,6 +2,11 @@ package com.sachin.travelservice.service;
 
 import com.sachin.travelservice.dto.HotelStayDto;
 import com.sachin.travelservice.dto.TravelDTO;
+import com.sachin.travelservice.dto.UserDTO;
+import com.sachin.travelservice.dto.fulldetail.GuideDTO;
+import com.sachin.travelservice.dto.fulldetail.HotelStayFullDetailDto;
+import com.sachin.travelservice.dto.fulldetail.TravelFullDetailDto;
+import com.sachin.travelservice.dto.fulldetail.VehicleDTO;
 import com.sachin.travelservice.entity.HotelStay;
 import com.sachin.travelservice.entity.Travel;
 import com.sachin.travelservice.exception.NotFoundException;
@@ -13,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -58,7 +64,7 @@ public class TravelServiceImpl implements TravelService {
         existingTravel.setIsWithPets(travelDTO.getIsWithPets());
         existingTravel.setIsWithGuide(travelDTO.getIsWithGuide());
         existingTravel.setIsCancelled(travelDTO.getIsCancelled());
-        existingTravel.setTotalPrice(travelDTO.getTotalPrice());
+        existingTravel.setTravelTotalPrice(travelDTO.getTravelTotalPrice());
         existingTravel.setTravelAreas(travelDTO.getTravelAreas());
         existingTravel.setVehicleId(travelDTO.getVehicleId());
         existingTravel.setUserId(travelDTO.getUserId());
@@ -95,4 +101,44 @@ public class TravelServiceImpl implements TravelService {
         return travelDto;
     }
 
+    public double calculateTotalPriceForNonCancelledTravelsOnDate(LocalDate date) {
+        List<Travel> nonCancelledTravels = travelRepo.findNonCancelledTravelsOnDate(date);
+        return nonCancelledTravels.stream()
+                .mapToDouble(Travel::getTravelTotalPrice)
+                .sum();
+    }
+
+    public double calculateTotalPriceForNonCancelledTravelsInWeek(LocalDate startDate) {
+        LocalDate endOfWeek = startDate.plusDays(6);
+
+        List<Travel> nonCancelledTravels = travelRepo.findNonCancelledTravelsInWeek(startDate, endOfWeek);
+        return nonCancelledTravels.stream()
+                .mapToDouble(Travel::getTravelTotalPrice)
+                .sum();
+    }
+    public double calculateTotalPriceForNonCancelledTravelsInMonth(int year, int month) {
+        LocalDate startOfMonth = LocalDate.of(year, month, 1);
+        LocalDate endOfMonth = startOfMonth.withDayOfMonth(startOfMonth.lengthOfMonth());
+
+        List<Travel> nonCancelledTravels = travelRepo.findNonCancelledTravelsInMonth(startOfMonth, endOfMonth);
+        return nonCancelledTravels.stream()
+                .mapToDouble(Travel::getTravelTotalPrice)
+                .sum();
+    }
+
+    public double calculateTotalPriceForNonCancelledTravelsInYear(int year) {
+        LocalDate startOfYear = LocalDate.of(year, 1, 1);
+        LocalDate endOfYear = LocalDate.of(year, 12, 31);
+
+        List<Travel> nonCancelledTravels = travelRepo.findNonCancelledTravelsInYear(startOfYear, endOfYear);
+        return nonCancelledTravels.stream()
+                .mapToDouble(Travel::getTravelTotalPrice)
+                .sum();
+    }
+
+    @Override
+    public TravelFullDetailDto getFullTravelDto(UserDTO userDTO, List<HotelStayFullDetailDto> hotelStayDtos, VehicleDTO vehicleDTO,
+                                                GuideDTO guideDTO) {
+        return null;
+    }
 }

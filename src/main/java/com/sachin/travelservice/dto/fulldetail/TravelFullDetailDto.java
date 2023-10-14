@@ -41,8 +41,8 @@ public class TravelFullDetailDto {
     private Boolean isCancelled;
     private String guideId;
 
-    @DecimalMin(value = "1.0", message = "Total price Counts must be at least 1.0")
-    private double totalPrice;
+    @DecimalMin(value = "1.0", message = "The total price must be greater than or equal to 1")
+    private double travelTotalPrice;
 
     @NotNull
     private LocalDate travelPlacedDate;

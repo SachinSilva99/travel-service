@@ -2,10 +2,7 @@ package com.sachin.travelservice.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sachin.travelservice.entity.TravelPackageCategory;
-import jakarta.validation.constraints.FutureOrPresent;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -36,12 +33,17 @@ public class TravelDTO {
     @Min(value = 1, message = "Total Head Counts must be at least 1")
     private int totalHeadCount;
     private Boolean isWithPets;
-    @NotNull
     private Boolean isWithGuide;
-    @NotNull
     private Boolean isCancelled;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private Boolean isApprovedByAdmin;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private String bankSlipImg;
     private String guideId;
-    private double totalPrice;
+
+    @DecimalMin(value = "1.0", message = "The total price must be greater than or equal to 1")
+    private double travelTotalPrice;
     @NotNull
     private LocalDate travelPlacedDate;
     @NotEmpty
