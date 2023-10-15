@@ -32,11 +32,14 @@ public class Travel {
     private int noOfChildren;
     @Min(value = 1, message = "The total head count must be at least 1")
     private int totalHeadCount;
+    @NotNull
     private Boolean isWithPets;
+    @NotNull
     private Boolean isWithGuide;
-    private Boolean isCancelled;
+    @NotNull
+    private boolean isCancelled;
 
-    private Boolean isApprovedByAdmin;
+    private boolean isApprovedByAdmin;
 
     @NotEmpty
     private String bankSlipImg;

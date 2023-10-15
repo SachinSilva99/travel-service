@@ -32,13 +32,13 @@ public class TravelDTO {
     private int noOfChildren;
     @Min(value = 1, message = "Total Head Counts must be at least 1")
     private int totalHeadCount;
+    @NotNull
     private Boolean isWithPets;
-    private Boolean isWithGuide;
-    private Boolean isCancelled;
+    private boolean isWithGuide;
+    private boolean isCancelled;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Boolean isApprovedByAdmin;
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String bankSlipImg;
     private String guideId;
 

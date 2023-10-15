@@ -53,11 +53,15 @@ public class TravelController {
                 HttpStatus.CREATED);
     }
 
-    @PutMapping(value = "/{travelId}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/{travelId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<StandardResponse<String>> updateTravel(
             @PathVariable String travelId,
-            @RequestBody @Valid TravelDTO travelDTO
-    ) {
+            @RequestPart @Valid TravelDTO travelDTO,
+            @RequestPart MultipartFile bankSlipImg
+    ) throws IOException {
+        validateImageFile(bankSlipImg);
+        String bankSlipImgString = encodeToBase64(bankSlipImg);
+        travelDTO.setBankSlipImg(bankSlipImgString);
         travelService.updateTravel(travelId, travelDTO);
         return new ResponseEntity<>(new StandardResponse<>(), HttpStatus.NO_CONTENT);
     }
