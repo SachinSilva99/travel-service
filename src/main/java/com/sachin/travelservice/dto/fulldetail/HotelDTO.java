@@ -50,7 +50,7 @@ public class HotelDTO {
     private String hotelRemarks;
 
     @NotEmpty
-    private List<String> hotelImagesStrings = new ArrayList<>();
+    private List<HotelImageDTO> hotelImageDTOS = new ArrayList<>();
 
     @NotEmpty
     private List<HotelPackageDTO> hotelPackageDTOS = new ArrayList<>();

@@ -46,6 +46,8 @@ public class TravelFullDetailDto {
 
     @NotNull
     private LocalDate travelPlacedDate;
+    @NotEmpty
+    private String bankSlipImg;
 
     @NotEmpty
     private List<HotelStayFullDetailDto> hotelStayDtos;
@@ -54,7 +56,7 @@ public class TravelFullDetailDto {
     private VehicleDTO vehicleDTO;
 
     @NotEmpty
-    private TravelPackageCategory packageCategory;
+    private TravelPackageCategory travelPackageCategory;
 
     @NotEmpty
     private UserDTO userDto;

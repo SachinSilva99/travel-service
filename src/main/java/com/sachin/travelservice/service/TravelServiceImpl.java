@@ -37,6 +37,7 @@ public class TravelServiceImpl implements TravelService {
         List<HotelStay> hotelStays = travelDTO.getHotelStayDtos().stream()
                 .map(mapper::toHotelStay).toList();
         travel.setHotelStays(hotelStays);
+
         hotelStayRepo.saveAll(hotelStays);
         return travelRepo.save(travel).getTravelId();
     }
@@ -62,8 +63,8 @@ public class TravelServiceImpl implements TravelService {
         existingTravel.setNoOfChildren(travelDTO.getNoOfChildren());
         existingTravel.setTotalHeadCount(travelDTO.getTotalHeadCount());
         existingTravel.setIsWithPets(travelDTO.getIsWithPets());
-        existingTravel.setIsWithGuide(travelDTO.getIsWithGuide());
-        existingTravel.setIsCancelled(travelDTO.getIsCancelled());
+        existingTravel.setIsWithGuide(travelDTO.getIsWithPets());
+        existingTravel.setCancelled(travelDTO.isCancelled());
         existingTravel.setTravelTotalPrice(travelDTO.getTravelTotalPrice());
         existingTravel.setTravelAreas(travelDTO.getTravelAreas());
         existingTravel.setVehicleId(travelDTO.getVehicleId());

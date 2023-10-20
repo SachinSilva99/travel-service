@@ -1,5 +1,6 @@
 package com.sachin.travelservice.entity;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,8 +27,13 @@ public class HotelStay {
     
     @NotEmpty
     private LocalDate hotelStayEndDate;
+
     @NotEmpty
     private double hotelStayTotalCost;
+
+    @NotBlank
+    private String hotelStayHotelId;
+
     @NotEmpty
-    private String hotelId;
+    private String hotelStayHotelPackageId;
 }

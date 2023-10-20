@@ -49,7 +49,7 @@ public class APIServiceImpl implements APIService {
 
         return hotelStays.stream().map(hotelStay -> {
 
-            String hotelId = hotelStay.getHotelId();
+            String hotelId = hotelStay.getHotelStayHotelId();
             WebClient webClient = WebClient.create(hotelApiUrl + hotelId);
             Mono<StandardResponse<HotelDTO>> standardResponseMono = webClient.get()
                     .retrieve()

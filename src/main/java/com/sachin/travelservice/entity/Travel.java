@@ -32,11 +32,13 @@ public class Travel {
     private int noOfChildren;
     @Min(value = 1, message = "The total head count must be at least 1")
     private int totalHeadCount;
+
     @NotNull
     private Boolean isWithPets;
+
     @NotNull
     private Boolean isWithGuide;
-    @NotNull
+
     private boolean isCancelled;
 
     private boolean isApprovedByAdmin;
@@ -64,6 +66,7 @@ public class Travel {
 
     @NotBlank
     private String userId;
+
     private String guideId;
 
 }

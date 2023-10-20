@@ -23,6 +23,7 @@ public class TravelDTO {
     private LocalDate startDate;
     @FutureOrPresent
     private LocalDate endDate;
+
     @NotEmpty(message = "Travel areas cannot be empty")
     private List<String> travelAreas;
 
@@ -40,6 +41,8 @@ public class TravelDTO {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Boolean isApprovedByAdmin;
     private String bankSlipImg;
+
+
     private String guideId;
 
     @DecimalMin(value = "1.0", message = "The total price must be greater than or equal to 1")
