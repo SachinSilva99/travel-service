@@ -69,5 +69,9 @@ public class Travel {
 
     private String guideId;
 
+    public void setCustomTravelId(String travelId) {
+        this.travelId = travelId;
+    }
+
 }
 

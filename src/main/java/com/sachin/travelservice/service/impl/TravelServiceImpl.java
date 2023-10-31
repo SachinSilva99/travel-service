@@ -1,4 +1,4 @@
-package com.sachin.travelservice.service;
+package com.sachin.travelservice.service.impl;
 
 import com.sachin.travelservice.dto.HotelStayDto;
 import com.sachin.travelservice.dto.TravelDTO;
@@ -13,6 +13,8 @@ import com.sachin.travelservice.exception.NotFoundException;
 import com.sachin.travelservice.exception.UpdateNotAllowedException;
 import com.sachin.travelservice.repo.HotelStayRepo;
 import com.sachin.travelservice.repo.TravelRepo;
+import com.sachin.travelservice.service.TravelService;
+import com.sachin.travelservice.util.CustomTravelIdGenerator;
 import com.sachin.travelservice.util.mapper.Mapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -30,10 +32,18 @@ public class TravelServiceImpl implements TravelService {
     private final TravelRepo travelRepo;
     private final HotelStayRepo hotelStayRepo;
     private final Mapper mapper;
+    private final CustomTravelIdGenerator idGenerator;
 
     @Override
     public String createTravel(TravelDTO travelDTO) {
         Travel travel = mapper.toTravel(travelDTO);
+
+        String travelId = idGenerator.generateId(travelDTO.getUserId(), travelDTO.getTravelPlacedDate());
+        while (travelRepo.existsById(travelId)) {
+            travelId = idGenerator.generateId(travelDTO.getUserId(), travelDTO.getTravelPlacedDate());
+        }
+        travel.setCustomTravelId(travelId);
+
         List<HotelStay> hotelStays = travelDTO.getHotelStayDtos().stream()
                 .map(mapper::toHotelStay).toList();
         travel.setHotelStays(hotelStays);
@@ -117,6 +127,7 @@ public class TravelServiceImpl implements TravelService {
                 .mapToDouble(Travel::getTravelTotalPrice)
                 .sum();
     }
+
     public double calculateTotalPriceForNonCancelledTravelsInMonth(int year, int month) {
         LocalDate startOfMonth = LocalDate.of(year, month, 1);
         LocalDate endOfMonth = startOfMonth.withDayOfMonth(startOfMonth.lengthOfMonth());

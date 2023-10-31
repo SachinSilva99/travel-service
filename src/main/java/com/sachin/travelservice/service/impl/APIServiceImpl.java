@@ -1,4 +1,4 @@
-package com.sachin.travelservice.service;
+package com.sachin.travelservice.service.impl;
 
 import com.sachin.travelservice.dto.UserDTO;
 import com.sachin.travelservice.dto.fulldetail.HotelDTO;
@@ -8,6 +8,7 @@ import com.sachin.travelservice.entity.HotelStay;
 import com.sachin.travelservice.entity.Travel;
 import com.sachin.travelservice.exception.NotFoundException;
 import com.sachin.travelservice.repo.TravelRepo;
+import com.sachin.travelservice.service.APIService;
 import com.sachin.travelservice.util.StandardResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;

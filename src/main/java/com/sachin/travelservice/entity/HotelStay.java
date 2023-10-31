@@ -30,6 +30,11 @@ public class HotelStay {
 
     @NotEmpty
     private double hotelStayTotalCost;
+    @NotBlank
+    private String location;
+
+    private double lat;
+    private double lng;
 
     @NotBlank
     private String hotelStayHotelId;

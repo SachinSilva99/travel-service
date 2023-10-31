@@ -29,6 +29,12 @@ public class HotelStayDto {
     private double hotelStayTotalCost;
 
     @NotBlank
+    private String location;
+
+    private double lat;
+    private double lng;
+
+    @NotBlank
     private String hotelStayHotelId;
     @NotEmpty
     private String hotelStayHotelPackageId;
