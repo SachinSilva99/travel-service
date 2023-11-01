@@ -21,15 +21,18 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class APIServiceImpl implements APIService {
+
     private final TravelRepo travelRepo;
 
     @Override
-    public UserDTO getUserDTO(String apiUrl, String travelId) {
+    public UserDTO getUserDTO(String apiUrl, String travelId, String bearerToken) {
         String userId = travelRepo.findById(travelId)
                 .orElseThrow(() -> new NotFoundException("Travel with ID " + travelId + " not found")).getUserId();
 
-        WebClient webClient = WebClient.create(apiUrl + userId);
-        Mono<StandardResponse<UserDTO>> standardResponseMono = webClient.get()
+        WebClient webClient = WebClient.create(apiUrl + "/" + userId);
+        Mono<StandardResponse<UserDTO>> standardResponseMono = webClient
+                .get()
+                .header("Authorization", "Bearer " + bearerToken)
                 .retrieve()
                 .bodyToMono(new ParameterizedTypeReference<>() {
                 });

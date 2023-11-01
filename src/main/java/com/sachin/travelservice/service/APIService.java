@@ -8,7 +8,7 @@ import com.sachin.travelservice.exception.NotFoundException;
 import java.util.List;
 
 public interface APIService {
-    UserDTO getUserDTO(String apiUrl, String travelId) throws NotFoundException;
+    UserDTO getUserDTO(String apiUrl, String travelId, String bearerToken) throws NotFoundException;
 
 
     List<HotelStayFullDetailDto> getHotelStayDtos(String hotelApiUrl, String travelId);

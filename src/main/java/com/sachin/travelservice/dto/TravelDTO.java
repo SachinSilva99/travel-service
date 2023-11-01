@@ -1,7 +1,7 @@
 package com.sachin.travelservice.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.sachin.travelservice.entity.TravelPackageCategory;
+import com.sachin.travelservice.entity.enums.PackageCategory;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,9 +24,6 @@ public class TravelDTO {
     @FutureOrPresent
     private LocalDate endDate;
 
-    @NotEmpty(message = "Travel areas cannot be empty")
-    private List<String> travelAreas;
-
     @Min(value = 1, message = "The number of adults must be at least 1")
     private int noOfAdults;
     @Min(value = 0, message = "The number of children must be 0 or greater than 0")
@@ -40,8 +37,8 @@ public class TravelDTO {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Boolean isApprovedByAdmin;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String bankSlipImg;
-
 
     private String guideId;
 
@@ -55,8 +52,7 @@ public class TravelDTO {
     @NotEmpty
     private String vehicleId;
 
-    @NotEmpty
-    private TravelPackageCategory packageCategory;
+    private PackageCategory packageCategory;
     @NotEmpty
     private String userId;
 }

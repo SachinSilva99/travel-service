@@ -76,7 +76,7 @@ public class TravelServiceImpl implements TravelService {
         existingTravel.setIsWithGuide(travelDTO.getIsWithPets());
         existingTravel.setCancelled(travelDTO.isCancelled());
         existingTravel.setTravelTotalPrice(travelDTO.getTravelTotalPrice());
-        existingTravel.setTravelAreas(travelDTO.getTravelAreas());
+//        existingTravel.setTravelAreas(travelDTO.getTravelAreas());
         existingTravel.setVehicleId(travelDTO.getVehicleId());
         existingTravel.setUserId(travelDTO.getUserId());
         existingTravel.setGuideId(travelDTO.getGuideId());

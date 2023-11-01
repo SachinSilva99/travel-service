@@ -1,7 +1,7 @@
 package com.sachin.travelservice.dto.fulldetail;
 
 import com.sachin.travelservice.dto.UserDTO;
-import com.sachin.travelservice.entity.TravelPackageCategory;
+import com.sachin.travelservice.entity.enums.PackageCategory;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -56,7 +56,7 @@ public class TravelFullDetailDto {
     private VehicleDTO vehicleDTO;
 
     @NotEmpty
-    private TravelPackageCategory travelPackageCategory;
+    private PackageCategory packageCategory;
 
     @NotEmpty
     private UserDTO userDto;

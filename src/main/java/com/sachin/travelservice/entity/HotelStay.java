@@ -16,15 +16,16 @@ import java.time.LocalDate;
 @Data
 @Document
 public class HotelStay {
+
     @Id
     private String hotelStayId;
-
+    private int hotelStayOrderNumber;
     @Field("travelId")
     private String travelId;
 
     @NotEmpty
     private LocalDate hotelStayStartDate;
-    
+
     @NotEmpty
     private LocalDate hotelStayEndDate;
 

@@ -15,6 +15,8 @@ import java.time.LocalDate;
 @Data
 @Builder
 public class HotelStayDto {
+
+    private int hotelStayOrderNumber;
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String hotelStayId;
 
@@ -27,9 +29,6 @@ public class HotelStayDto {
     private LocalDate hotelStayEndDate;
     @NotBlank
     private double hotelStayTotalCost;
-
-    @NotBlank
-    private String location;
 
     private double lat;
     private double lng;

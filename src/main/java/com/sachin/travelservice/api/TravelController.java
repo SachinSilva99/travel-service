@@ -26,7 +26,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/v1/travels", produces = MediaType.APPLICATION_JSON_VALUE)
-@Validated
 @RequiredArgsConstructor
 public class TravelController {
     private final TravelService travelService;
@@ -36,7 +35,7 @@ public class TravelController {
     public ResponseEntity<StandardResponse<String>> createTravel(
             @RequestPart @Valid TravelDTO travelDTO,
             @RequestPart MultipartFile bankSlipImg
-            ) throws IOException {
+    ) throws IOException {
         validateImageFile(bankSlipImg);
         String bankSlipImgString = encodeToBase64(bankSlipImg);
         travelDTO.setBankSlipImg(bankSlipImgString);
@@ -50,7 +49,7 @@ public class TravelController {
     public ResponseEntity<StandardResponse<String>> updateTravel(
             @PathVariable String travelId,
             @RequestPart @Valid TravelDTO travelDTO,
-            @RequestPart MultipartFile bankSlipImg
+            @RequestPart(required = false) MultipartFile bankSlipImg
     ) throws IOException {
         validateImageFile(bankSlipImg);
         String bankSlipImgString = encodeToBase64(bankSlipImg);
@@ -61,24 +60,32 @@ public class TravelController {
 
 
     @GetMapping(value = "/{travelId}")
-    public ResponseEntity<StandardResponse<TravelFullDetailDto>> getTravelFullDto(@PathVariable String travelId) {
-        String userApiUrl = "http://localhost:8090/userservice/api/v1/users/";
-        String hotelApiUrl = "http://localhost:8092/hotelservice/api/v1/hotels/";
+    public ResponseEntity<StandardResponse<TravelFullDetailDto>> getTravelFullDto(
+            @PathVariable String travelId,
+            @RequestHeader("Authorization") String authorizationHeader // Get the Authorization header
+    ) {
+        String bearerToken = null;
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            bearerToken = authorizationHeader.substring(7); // Remove "Bearer " prefix
+        }
+      String userApiUrl = "http://localhost:8090/userservice/api/v1/getusers";
+       /*   String hotelApiUrl = "http://localhost:8092/hotelservice/api/v1/hotels/";
         String vehicleApiUrl = "http://localhost:8095/vehicleservice/api/v1/vehicles";
         String guideApiUrl = null;
         String guideId = travelService.getTravel(travelId).getGuideId();
         if (guideId != null) {
             //:TODO implement get guide
             guideApiUrl = "http://localhost:8095/vehicleservice/api/v1/vehicles";
-        }
+        }*/
 
-        UserDTO userDTO = apiService.getUserDTO(userApiUrl, travelId);
-        List<HotelStayFullDetailDto> hotelStayDtos = apiService.getHotelStayDtos(hotelApiUrl, travelId);
-        VehicleDTO vehicleDTO = apiService.getVehcileDto(vehicleApiUrl, travelId);
+        UserDTO userDTO = apiService.getUserDTO(userApiUrl, travelId,bearerToken);
+      /*  List<HotelStayFullDetailDto> hotelStayDtos = apiService.getHotelStayDtos(hotelApiUrl, travelId);
+        VehicleDTO vehicleDTO = apiService.getVehcileDto(vehicleApiUrl, travelId);*/
 
-        TravelFullDetailDto travelFullDetailDto = travelService.getFullTravelDto(userDTO, hotelStayDtos, vehicleDTO,null);
+        System.out.println(userDTO);
+//        TravelFullDetailDto travelFullDetailDto = travelService.getFullTravelDto(userDTO, hotelStayDtos, vehicleDTO, null);
         return new ResponseEntity<>(
-                new StandardResponse<>(HttpStatus.OK.value(), "OK", travelFullDetailDto),
+                new StandardResponse<>(HttpStatus.OK.value(), "OK", null),
                 HttpStatus.OK);
     }
 
@@ -104,7 +111,7 @@ public class TravelController {
                 HttpStatus.OK);
     }
 
-    @GetMapping("/monthly-income")
+    @GetMapping("/yearly-income")
     public ResponseEntity<StandardResponse<Double>> getYearlyIncome(@RequestParam("date") int year) {
         double yearlyIncome = travelService.calculateTotalPriceForNonCancelledTravelsInYear(year);
         return new ResponseEntity<>(
@@ -114,6 +121,7 @@ public class TravelController {
                         yearlyIncome),
                 HttpStatus.OK);
     }
+
     private String encodeToBase64(MultipartFile file) throws IOException {
         return Base64.getEncoder().encodeToString(file.getBytes());
     }

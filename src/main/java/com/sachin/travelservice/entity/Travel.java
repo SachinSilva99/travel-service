@@ -1,5 +1,6 @@
 package com.sachin.travelservice.entity;
 
+import com.sachin.travelservice.entity.enums.PackageCategory;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -55,11 +56,10 @@ public class Travel {
     @DBRef
     private List<HotelStay> hotelStays;
 
-    @DBRef
-    private TravelPackageCategory packageCategory;
 
-    @NotEmpty
-    private List<String> travelAreas = new ArrayList<>();
+    @NotBlank
+    private PackageCategory packageCategory;
+
 
     @NotBlank
     private String vehicleId;
