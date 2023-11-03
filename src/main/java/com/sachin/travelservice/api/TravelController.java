@@ -2,6 +2,7 @@ package com.sachin.travelservice.api;
 
 import com.sachin.travelservice.dto.TravelDTO;
 import com.sachin.travelservice.dto.UserDTO;
+import com.sachin.travelservice.dto.fulldetail.GuideDTO;
 import com.sachin.travelservice.dto.fulldetail.HotelStayFullDetailDto;
 import com.sachin.travelservice.dto.fulldetail.TravelFullDetailDto;
 import com.sachin.travelservice.dto.fulldetail.VehicleDTO;
@@ -15,7 +16,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -68,24 +68,24 @@ public class TravelController {
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             bearerToken = authorizationHeader.substring(7); // Remove "Bearer " prefix
         }
-      String userApiUrl = "http://localhost:8090/userservice/api/v1/getusers";
-       /*   String hotelApiUrl = "http://localhost:8092/hotelservice/api/v1/hotels/";
-        String vehicleApiUrl = "http://localhost:8095/vehicleservice/api/v1/vehicles";
-        String guideApiUrl = null;
+        String userApiUrl = "http://localhost:8090/userservice/api/v1/getusers";
+        String hotelApiUrl = "http://localhost:8092/hotelservice/api/v1/gethotels";
+        String vehicleApiUrl = "http://localhost:8095/vehicleservice/api/v1/getvehicles";
+        String guideApiUrl = "http://localhost:8097/guideservice/api/v1/getguides";
         String guideId = travelService.getTravel(travelId).getGuideId();
+        GuideDTO guideDTO = null;
         if (guideId != null) {
-            //:TODO implement get guide
-            guideApiUrl = "http://localhost:8095/vehicleservice/api/v1/vehicles";
-        }*/
+            guideDTO = apiService.getGuideDTO(guideApiUrl, travelId);
+        }
 
-        UserDTO userDTO = apiService.getUserDTO(userApiUrl, travelId,bearerToken);
-      /*  List<HotelStayFullDetailDto> hotelStayDtos = apiService.getHotelStayDtos(hotelApiUrl, travelId);
-        VehicleDTO vehicleDTO = apiService.getVehcileDto(vehicleApiUrl, travelId);*/
+        UserDTO userDTO = apiService.getUserDTO(userApiUrl, travelId, bearerToken);
+        List<HotelStayFullDetailDto> hotelStayDtos = apiService.getHotelStayDtos(hotelApiUrl, travelId);
+        VehicleDTO vehicleDTO = apiService.getVehcileDto(vehicleApiUrl, travelId);
+        System.out.println(guideDTO);
 
-        System.out.println(userDTO);
-//        TravelFullDetailDto travelFullDetailDto = travelService.getFullTravelDto(userDTO, hotelStayDtos, vehicleDTO, null);
+        TravelFullDetailDto travelFullDetailDto = travelService.getFullTravelDto(travelId,userDTO, hotelStayDtos, vehicleDTO, guideDTO);
         return new ResponseEntity<>(
-                new StandardResponse<>(HttpStatus.OK.value(), "OK", null),
+                new StandardResponse<>(HttpStatus.OK.value(), "OK", travelFullDetailDto),
                 HttpStatus.OK);
     }
 

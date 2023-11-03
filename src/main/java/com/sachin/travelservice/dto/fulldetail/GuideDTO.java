@@ -10,14 +10,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Builder
 public class GuideDTO {
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String guideId;
 
     @NotEmpty
@@ -26,21 +24,21 @@ public class GuideDTO {
     @NotNull
     private LocalDate dob;
 
-    @NotEmpty
     private GENDER gender;
 
     @NotEmpty
     private String contact;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private String guideProfileImage;
+
     private String guideIdImgFront;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String guideIdImgBack;
 
     @NotEmpty
-    private List<String> guideExperience;
+    private String guideExperience;
 
     @NotEmpty
     private String guide_remarks;
+    private double guideManDayValue;
 }

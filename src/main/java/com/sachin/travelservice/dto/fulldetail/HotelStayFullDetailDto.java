@@ -21,7 +21,8 @@ public class HotelStayFullDetailDto {
     private HotelDTO hotelDTO;
     @NotBlank
     private HotelPackageDTO hotelPackageDTO;
-
+    private double lat;
+    private double lng;
 
     @NotBlank
     private LocalDate hotelStayStartDate;

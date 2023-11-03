@@ -1,9 +1,7 @@
 package com.sachin.travelservice.service.impl;
 
 import com.sachin.travelservice.dto.UserDTO;
-import com.sachin.travelservice.dto.fulldetail.HotelDTO;
-import com.sachin.travelservice.dto.fulldetail.HotelStayFullDetailDto;
-import com.sachin.travelservice.dto.fulldetail.VehicleDTO;
+import com.sachin.travelservice.dto.fulldetail.*;
 import com.sachin.travelservice.entity.HotelStay;
 import com.sachin.travelservice.entity.Travel;
 import com.sachin.travelservice.exception.NotFoundException;
@@ -23,6 +21,7 @@ import java.util.List;
 public class APIServiceImpl implements APIService {
 
     private final TravelRepo travelRepo;
+    private final WebClient webClient;
 
     @Override
     public UserDTO getUserDTO(String apiUrl, String travelId, String bearerToken) {
@@ -50,12 +49,11 @@ public class APIServiceImpl implements APIService {
 
 
         List<HotelStay> hotelStays = travel.getHotelStays();
-
         return hotelStays.stream().map(hotelStay -> {
 
             String hotelId = hotelStay.getHotelStayHotelId();
-            WebClient webClient = WebClient.create(hotelApiUrl + hotelId);
             Mono<StandardResponse<HotelDTO>> standardResponseMono = webClient.get()
+                    .uri(hotelApiUrl + "/" + hotelId)
                     .retrieve()
                     .bodyToMono(new ParameterizedTypeReference<>() {
                     });
@@ -64,9 +62,21 @@ public class APIServiceImpl implements APIService {
                 throw new NotFoundException(hotelId + " user not found");
             }
             HotelDTO hotelDTO = block.getData();
+            System.out.println(hotelDTO.getHotelName() + " " + hotelDTO.getHotelId());
+            String hotelStayHotelPackageId = hotelStay.getHotelStayHotelPackageId();
+            HotelPackageDTO desiredPackage = hotelDTO.getHotelPackageDTOS()
+                    .stream()
+                    .filter(packageDTO -> hotelStayHotelPackageId.equals(packageDTO.getHotelPackageId()))
+                    .findFirst()
+                    .orElse(null);
+
             return HotelStayFullDetailDto.builder()
+                    .hotelStayId(hotelStay.getHotelStayId())
+                    .hotelPackageDTO(desiredPackage)
                     .hotelDTO(hotelDTO)
                     .travelId(travelId)
+                    .lat(hotelStay.getLat())
+                    .lng(hotelStay.getLng())
                     .hotelStayEndDate(hotelStay.getHotelStayEndDate())
                     .hotelStayStartDate(hotelStay.getHotelStayStartDate())
                     .hotelStayTotalCost(hotelStay.getHotelStayTotalCost()).build();
@@ -75,6 +85,31 @@ public class APIServiceImpl implements APIService {
 
     @Override
     public VehicleDTO getVehcileDto(String vehicleApiUrl, String travelId) throws NotFoundException {
-        return null;
+        Travel travel = travelRepo.findById(travelId)
+                .orElseThrow(() -> new NotFoundException("Travel with ID " + travelId + " not found"));
+        String vehicleId = travel.getVehicleId();
+        Mono<StandardResponse<VehicleDTO>> standardResponseMono = webClient
+                .get()
+                .uri(vehicleApiUrl + "/" + vehicleId)
+                .retrieve()
+                .bodyToMono(new ParameterizedTypeReference<>() {
+                });
+        StandardResponse<VehicleDTO> block = standardResponseMono.block();
+        return block.getData();
+    }
+
+    @Override
+    public GuideDTO getGuideDTO(String guideApiUrl, String travelId) {
+        Travel travel = travelRepo.findById(travelId)
+                .orElseThrow(() -> new NotFoundException("Travel with ID " + travelId + " not found"));
+        String guideId = travel.getGuideId();
+        Mono<StandardResponse<GuideDTO>> standardResponseMono = webClient
+                .get()
+                .uri(guideApiUrl + "/" + guideId)
+                .retrieve()
+                .bodyToMono(new ParameterizedTypeReference<>() {
+                });
+        StandardResponse<GuideDTO> block = standardResponseMono.block();
+        return block.getData();
     }
 }

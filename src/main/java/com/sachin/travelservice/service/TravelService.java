@@ -27,5 +27,5 @@ public interface TravelService {
     public double calculateTotalPriceForNonCancelledTravelsInYear(int year);
 
     TravelFullDetailDto getFullTravelDto(
-            UserDTO userDTO, List<HotelStayFullDetailDto> hotelStayDtos, VehicleDTO vehicleDTO, GuideDTO guideDTO);
+            String travelId, UserDTO userDTO, List<HotelStayFullDetailDto> hotelStayDtos, VehicleDTO vehicleDTO, GuideDTO guideDTO);
 }

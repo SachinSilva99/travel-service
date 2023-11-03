@@ -149,8 +149,29 @@ public class TravelServiceImpl implements TravelService {
     }
 
     @Override
-    public TravelFullDetailDto getFullTravelDto(UserDTO userDTO, List<HotelStayFullDetailDto> hotelStayDtos, VehicleDTO vehicleDTO,
+    public TravelFullDetailDto getFullTravelDto(String travelId, UserDTO userDTO, List<HotelStayFullDetailDto> hotelStayDtos, VehicleDTO vehicleDTO,
                                                 GuideDTO guideDTO) {
-        return null;
+
+        Travel travel = travelRepo.findById(travelId)
+                .orElseThrow(() -> new NotFoundException("Travel with ID " + travelId + " not found"));
+        return new TravelFullDetailDto(
+                travel.getTravelId(),
+                travel.getStartDate(),
+                travel.getEndDate(),
+                travel.getNoOfAdults(),
+                travel.getNoOfChildren(),
+                travel.getTotalHeadCount(),
+                travel.getIsWithPets(),
+                travel.getIsWithGuide(),
+                travel.isCancelled(),
+                guideDTO,
+                travel.getTravelTotalPrice(),
+                travel.getTravelPlacedDate(),
+                travel.getBankSlipImg(),
+                hotelStayDtos,
+                vehicleDTO,
+                travel.getPackageCategory(),
+                userDTO
+        );
     }
 }

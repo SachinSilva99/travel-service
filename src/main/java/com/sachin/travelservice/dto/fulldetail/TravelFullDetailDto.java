@@ -19,12 +19,8 @@ public class TravelFullDetailDto {
 
     @NotEmpty
     private String travelId;
-    @FutureOrPresent
     private LocalDate startDate;
-    @FutureOrPresent
     private LocalDate endDate;
-    @NotEmpty(message = "Travel areas cannot be empty")
-    private List<String> travelAreas;
 
     @Min(value = 1, message = "The number of adults must be at least 1")
     private int noOfAdults;
@@ -39,7 +35,7 @@ public class TravelFullDetailDto {
     private Boolean isWithGuide;
     @NotNull
     private Boolean isCancelled;
-    private String guideId;
+    private GuideDTO guideDTO;
 
     @DecimalMin(value = "1.0", message = "The total price must be greater than or equal to 1")
     private double travelTotalPrice;

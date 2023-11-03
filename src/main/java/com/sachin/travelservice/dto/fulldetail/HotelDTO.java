@@ -1,6 +1,7 @@
 package com.sachin.travelservice.dto.fulldetail;
 
-import com.sachin.travelservice.entity.enums.HotelCategory;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.sachin.travelservice.dto.enums.hotel.HotelCategory;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -17,20 +18,16 @@ import java.util.List;
 @Data
 public class HotelDTO {
 
-    @NotBlank
-    private String hotel_id;
+    private String hotelId;
 
     @NotBlank
-    private String hotel_name;
+    private String hotelName;
 
     @NotNull
     private HotelCategory hotelCategory;
 
     @NotBlank
     private String hotelLocation;
-
-    @NotBlank
-    private String hotelLocationCoordinates;
 
     @Email
     private String hotelEmail;
@@ -49,7 +46,13 @@ public class HotelDTO {
     @NotBlank
     private String hotelRemarks;
 
+    private double hotelLocationLat;
+
+    private double hotelLocationLng;
+
     @NotEmpty
+    private List<String> hotelImagesStrings = new ArrayList<>();
+
     private List<HotelImageDTO> hotelImageDTOS = new ArrayList<>();
 
     @NotEmpty

@@ -6,6 +6,8 @@ import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.reactive.function.client.ExchangeStrategies;
+import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
 public class WebApp {
@@ -23,5 +25,15 @@ public class WebApp {
         registrationBean.setFilter(new JwtAuthenticationFilter());
         registrationBean.addUrlPatterns("/api/v1/travels");
         return registrationBean;
+    }
+    @Bean
+    public WebClient webClient() {
+        final int size = 20 * 1024 * 1024;
+        final ExchangeStrategies strategies = ExchangeStrategies.builder()
+                .codecs(codecs -> codecs.defaultCodecs().maxInMemorySize(size))
+                .build();
+        return WebClient.builder()
+                .exchangeStrategies(strategies)
+                .build();
     }
 }
